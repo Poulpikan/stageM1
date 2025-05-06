@@ -1,0 +1,13 @@
+GC% / AT%
+
+On observe une baisse progressive du pourcentage de GC en fonction de la taille des chromosomes, passant de 63 % sur le chromosome 1 à environ 58 % sur le chromosome 36.
+
+Entropy skewGC
+On remarque une baisse de l'Entropy et de skewGC au niveau du centromere. Elle peuvent etre quasiment au meme endroit comme sur le Chromosome 9
+Au sinon il peut il y a avoir un leger décalage. Dabord une baise de skewgc puis de l'Entropy comme on peut le voir sur 10
+Entropie et GC Skew
+
+On remarque une diminution de l'entropie et du GC skew au niveau du centromère. 
+
+Ces baisses peuvent être quasiment alignées, comme c’est le cas sur le chromosome 9.
+Sinon, il peut y avoir un décalage entre les deux signaux, il y a une chute du GC skew puis celle de l'entropie, comme observé sur le chromosome 10.
