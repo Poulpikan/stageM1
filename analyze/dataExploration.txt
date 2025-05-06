@@ -11,3 +11,5 @@ On remarque une diminution de l'entropie et du GC skew au niveau du centromère.
 
 Ces baisses peuvent être quasiment alignées, comme c’est le cas sur le chromosome 9.
 Sinon, il peut y avoir un décalage entre les deux signaux, il y a une chute du GC skew puis celle de l'entropie, comme observé sur le chromosome 10.
+
+Après la baisse du GC skew, qui atteint souvent des valeurs comprises entre -0,15 et -0,25, on observe généralement une remontée nette pouvant dépasser +0,2.
