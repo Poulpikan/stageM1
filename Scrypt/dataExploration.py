@@ -81,69 +81,90 @@ for maseq in mesSeq:
         entropies.append(entropy)
         positions.append(i + window_size // 2)  
 
-    x_vals = [0]
+    positions = range(len(seq))
     y_vals = [0]
-    z_vals = [0]
-
     for base in seq:
-        x = x_vals[-1]
         y = y_vals[-1]
-        z = z_vals[-1]
         if base == 'A':
-            x += 1
             y += 1
-            z += 1
         elif base == 'C':
-            x -= 1
             y += 1
-            z -= 1
         elif base == 'G':
-            x += 1
             y -= 1
-            z -= 1
         elif base == 'T':
-            x -= 1
             y -= 1
-            z += 1
         y_vals.append(y)
-
-        
-
-    # Détection des maxima locaux dans une fenêtre de 1000 (±500)
-    window_size = 20000
-    half_window = window_size // 2
-    peaks = []
-
-    # x_vals
-    x_vals = list(range(len(y_vals)))
-
-    # Détection des sommets (pics locaux) avec une distance minimale entre eux
-    peaks, _ = find_peaks(y_vals, distance=4000, prominence=10)  # tu peux ajuster 'prominence'
-
+    
+    # Supprimer la première valeur (0) pour aligner avec les positions
+    y_vals = y_vals[1:]
+    
+    # Détection des pics
+    # Ajuster ces paramètres selon vos besoins
+    prominence = 500  # Ajuster cette valeur pour contrôler la sensibilité
+    distance = 5000  # Distance minimale entre les pics en bases
+    
+    # Trouver les pics positifs
+    peaks_pos, _ = find_peaks(y_vals, prominence=prominence, distance=distance)
+    
     # Tracé
     plt.figure(figsize=(12, 4))
-    plt.plot(x_vals, y_vals, label=f'GC - {maseq.name}', color='teal')
+    plt.plot(positions, y_vals, label=f'Y skew - {maseq.name}', color='teal')
+    
+    # Ajouter des barres verticales pour les pics positifs
+    for peak in peaks_pos:
+        plt.axvline(x=peak, color='green', linestyle='--', linewidth=2)
+    
 
     # Centromères
     if maseq.name in centromeres:
         cent_start, cent_end = centromeres[maseq.name]
-        plt.axvline(x=cent_start, color='red', linestyle='--', label='Centromere Start')
-        plt.axvline(x=cent_end, color='purple', linestyle='--', label='Centromere End')
-
-    # Sommets détectés
-    for peak in peaks:
-        plt.axvline(x=peak, color='green', linestyle='--', alpha=0.6)
-
+        plt.axvline(x=cent_start, color='red', linestyle='--', linewidth=2, label='Centromere Start')
+        plt.axvline(x=cent_end, color='purple', linestyle='--', linewidth=2, label='Centromere End')
+    
     # Autres éléments
-    plt.title(f'Y skew plot for {maseq.name}')
+    plt.title(f'Y skew plot for {maseq.name} with peaks')
     plt.xlabel('Position in sequence')
-    plt.ylabel('Y')
+    plt.ylabel('Y skew')
     plt.axhline(0, color='gray', linestyle='--')
     plt.grid(True)
     plt.legend()
     plt.tight_layout()
     plt.savefig(f"../output/dataExploration/Y/{maseq.name}.png")
     plt.close()
+
+    # Tracé
+    plt.figure(figsize=(12, 4))
+    plt.plot(positions, y_vals, label=f'Y skew - {maseq.name}', color='teal')
+    
+    # Ajouter des barres verticales pour les pics positifs
+    for peak in peaks_pos:
+        plt.axvline(x=peak, color='green', linestyle='--', linewidth=2)
+    
+
+    # Centromères
+    if maseq.name in centromeres:
+        cent_start, cent_end = centromeres[maseq.name]
+        plt.axvline(x=cent_start, color='red', linestyle='--', linewidth=2, label='Centromere Start')
+        plt.axvline(x=cent_end, color='purple', linestyle='--', linewidth=2, label='Centromere End')
+    margin = 10000
+    zoom_start = max(0, cent_start - margin)
+    zoom_end = min(len(y_vals), cent_end + margin)
+    plt.xlim(zoom_start, zoom_end)
+    # Autres éléments
+    plt.title(f'Y skew plot for {maseq.name} with peaks')
+    plt.xlabel('Position in sequence')
+    plt.ylabel('Y skew')
+    plt.axhline(0, color='gray', linestyle='--')
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(f"../output/dataExploration/Y/{maseq.name}_zomm.png")
+    plt.close()
+
+
+
+
+    
 
     # for i in range(half_window, len(y_vals) - half_window,500):
     #     window = y_vals[i - half_window: i + half_window + 1]
